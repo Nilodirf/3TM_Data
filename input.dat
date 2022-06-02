@@ -1,0 +1,17 @@
+++++++++ Material parameters (general)+++++++++++++++++++++++++++++++++++++
+nx   ny   nz
+1    1    1     # Number of LLB spins, nx,ny
+0.5             # Spin number
+633	        # Curie Temperature
+0.616           # magnetic moment in Bhor magnetons
+0.0025          # intrinsic damping parameter
+0 0 1000        # external applied field (in Oe)
+1E-16         	# timestep
+'longrelax'     # output
+1	        # film thickness
+150            	# fluence
+10 
+++++++++ Magnon specific heat parameter ********* 
+0   0.32474  7.8509E-4  -2.0885E-5  
+++++++++ Debye specific heat parameter ********* 
+-1726   45.62 4.47  -0.05 0.00015  
