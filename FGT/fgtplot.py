@@ -107,4 +107,18 @@ def koopplot():
     plt.savefig('koopfit.pdf')
     plt.show()
 
-fitplot()
+def msdplot():
+    f=open('first_attempt_MSD.txt', 'r')
+    dat=f.read().split('\n')
+    lines=[i.split('\t') for i in dat]
+    times=[float(j[0])-0.8 for j in lines]
+    msd=[float(j[1]) for j in lines]
+    plt.xlabel(r'delay [ps]')
+    plt.ylabel(r'normalized MSD [arb. units]')
+    return(times, msd)
+
+tptimes, msd= msdplot()
+te=templot()
+
+plt.scatter(tptimes, msd)
+plt.show()
