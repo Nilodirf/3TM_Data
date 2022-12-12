@@ -127,11 +127,14 @@ def plot_bands_DOS(model, bands, DOS, bands_ac=None, bands_op=None, DOS_ac=None,
     ax1.set_ylabel(r'E [meV]', fontsize=16)
     ax1.set_xlim(0, 16)
     ax1.set_ylim(0, 50)
-    ax1.xaxis.set_ticklabels([])
+    ax1.xaxis.set_ticks([6.7, 10.2])
+    ax1.xaxis.set_ticklabels(['K','M'])
+    ax1.vlines(6.7, 0, 50, linestyle='dashed', color='black', alpha=0.5, linewidth=0.8)
+    ax1.vlines(10.2, 0, 50, linestyle='dashed', color='black', alpha=0.5, linewidth=0.8)
 
     ax2.set_xlim(0,)
     ax2.sharey(ax1)
-    ax2.set_xlabel(r'DOS [states/eV]', fontsize=16)
+    ax2.set_xlabel(r'DOS [1/eV]', fontsize=16)
     plt.savefig('PDOS_cutoff_2.pdf')
     plt.show()
 
@@ -152,7 +155,9 @@ def plot_cp_cutoff(cphs, cutoff):
     plt.ylabel(r'Lattice Heat capacity [J/m$^3$K]', fontsize=16)
     plt.title(r'cutoff energy=' + str(cutoff * deltE) + 'meV', fontsize=18)
     plt.legend(fontsize=16)
-    plt.savefig('cp_cutoff_2.pdf')
+    plt.xlim(0,1000)
+    plt.ylim(-0.01e7,1.65e7)
+    #plt.savefig('cp_cutoff_2.pdf')
     plt.show()
 
 
