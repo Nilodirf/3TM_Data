@@ -42,8 +42,6 @@ def simplot(file, offset):
     mag2 = [m.replace('[', '').replace(']', '') for m in mag2bae]
     m2 = [line.split() for line in mag2]
     m2s = np.array([[float(m2[i][j].replace(',', '')) for i in range(len(m2))] for j in range(len(m2[0]))])
-    print(len(m1s[0]))
-    print(len(m2s[0]))
 
     temes = [line[2].split('], [') for line in lines]
     tebae = [[te[i].replace('[', '').replace(']', '') for i in range(len(temes[0]))] for te in temes]
@@ -70,4 +68,4 @@ def simplot(file, offset):
     return (np.array(times), np.array(m1s), np.array(te1), np.array(tp1), np.array(tp21), np.array(m2s))
 
 dat_times, dat_tes=dataplot()
-sim_times, sim_ms, sim_te, sim_tp, sim_tp2, sim_m2s=simplot('test2.dat', )
+sim_times, sim_ms, sim_te, sim_tp, sim_tp2, sim_m2s=simplot('test2.dat', 0.1)
