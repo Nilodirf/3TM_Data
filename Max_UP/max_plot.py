@@ -69,4 +69,5 @@ def simplot(file, offset):
 
     return (np.array(times), np.array(m1s), np.array(te1), np.array(tp1), np.array(tp21), np.array(m2s))
 
-dataplot()
+dat_times, dat_tes=dataplot()
+sim_times, sim_ms, sim_te, sim_tp, sim_tp2, sim_m2s=simplot('test2.dat', )
