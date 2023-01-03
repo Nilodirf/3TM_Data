@@ -43,13 +43,16 @@ def simplot(file, offset):
     m2 = [line.split() for line in mag2]
     m2s = np.array([[float(m2[i][j].replace(',', '')) for i in range(len(m2))] for j in range(len(m2[0]))])
 
+    tes=[]
     temes = [line[2].split('], [') for line in lines]
     tebae = [[te[i].replace('[', '').replace(']', '') for i in range(len(temes[0]))] for te in temes]
-    te1bla = [tb[:][0] for tb in tebae]
-
-    te1n = [b.replace(',', '') for b in te1bla]
-    te1m = [te.split() for te in te1n]
-    te1 = [[float(i) for i in te] for te in te1m]
+    for i in range(len(tebae[0])):
+        te1bla = [tb[:][i] for tb in tebae]
+        te1n = [b.replace(',', '') for b in te1bla]
+        te1m = [te.split() for te in te1n]
+        te1 = [[float(i) for i in te] for te in te1m]
+        print(te1)
+        tes.append(te1)
 
     tpmes = [line[3].split('], [') for line in lines]
     tpbae = [[tp[i].replace('[', '').replace(']', '') for i in range(len(tpmes[0]))] for tp in tpmes]
@@ -65,7 +68,11 @@ def simplot(file, offset):
     tp21m = [tp.split() for tp in tp21n]
     tp21 = [[float(i) for i in tp] for tp in tp21m]
 
-    return (np.array(times), np.array(m1s), np.array(te1), np.array(tp1), np.array(tp21), np.array(m2s))
+    return (np.array(times), np.array(m1s), np.array(tes), np.array(tp1), np.array(tp21), np.array(m2s))
 
 dat_times, dat_tes=dataplot()
 sim_times, sim_ms, sim_te, sim_tp, sim_tp2, sim_m2s=simplot('test2.dat', 0.1)
+
+#print(sim_te)
+#plt.plot(sim_times, sim_te[0])
+#plt.show()
