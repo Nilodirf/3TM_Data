@@ -2,7 +2,7 @@ import numpy as np
 from scipy import constants as sp
 from matplotlib import pyplot as plt
 
-def dataplot(plot=False):
+def dataplot(plot=True):
     delay_file=open('delays.dat', 'r')
     delay_strings=delay_file.readlines()
     delays=[float(d.replace('\n','')) for d in delay_strings]       #list of delays in ps
@@ -18,5 +18,8 @@ def dataplot(plot=False):
         plt.xlabel(r'delays [ps]', fontsize=16)
         plt.ylabel(r'Temperature [K]', fontsize=16)
         plt.show()
+
+def simplot():
+    
 
 dataplot()
