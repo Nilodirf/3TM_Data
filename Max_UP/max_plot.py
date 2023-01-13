@@ -29,7 +29,7 @@ def simplot(sim, offset):
 
     #get delays
     delayfile=os.path.join(directory,'delays.npy')
-    delays=np.load(delayfile, mmap_mode='r')*1e12
+    delays=np.load(delayfile, mmap_mode='r')*1e12-offset
 
 
     #get all the electron temperatures
@@ -99,6 +99,9 @@ plt.show()
 plot(sim_times, sim_tp_ni, 'Tempertature', 'orange', False)
 plot(sim_times, sim_tp_au, 'Tempertature', 'red', False)
 plot(sim_times, sim_tp_ta, 'Tempertature', 'yellow', False)
+plt.show()
+
+plot(sim_times, sim_mag_ni, r'm/m_0', 'orange', True)
 plt.show()
 
 
