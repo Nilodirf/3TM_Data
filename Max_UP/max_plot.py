@@ -79,7 +79,7 @@ def simplot(sim, offset):
     return delays, tesGold, tesNickel, tesTa, tpsGold, tpsNickel, tpsTa, Nimag
 
 dat_times, dat_tes, dat_tps=dataplot()
-sim_times, sim_te_au, sim_te_ni, sim_te_ta, sim_tp_au, sim_tp_ni, sim_tp_ta, sim_mag_ni=simplot('test1', 0.1)
+sim_times, sim_te_au, sim_te_ni, sim_te_ta, sim_tp_au, sim_tp_ni, sim_tp_ta, sim_mag_ni=simplot('testkph', 0.1)
 
 def plot(times, dat, ylabel, color, show):
     plt.plot(times, dat, color=color)
