@@ -44,6 +44,8 @@ def simplot(sim, offset):
             tesGold=tes
         if mat=='Tantalum':
             tesTa=tes
+        if mat=='substrate':
+            tessub=tes
         # plt.plot(delays, tes)
         # plt.legend([mat], fontsize=14)
         # plt.xlabel(r'delay [ps]', fontsize=16)
@@ -62,6 +64,8 @@ def simplot(sim, offset):
             tpsGold=tps
         if mat=='Tantalum':
             tpsTa=tps
+        if mat=='substrate':
+            tpssub=tps
         # plt.plot(delays, tps)
         # plt.legend([str(tpf).replace('.npy', '').replace('tps', '')], fontsize=14)
         # plt.xlabel(r'delay [ps]', fontsize=16)
@@ -76,10 +80,10 @@ def simplot(sim, offset):
     # plt.xlabel(r'delay [ps]', fontsize=16)
     # plt.ylabel(r'$m/m_0$', fontsize=16)
     # plt.show()
-    return delays, tesGold, tesNickel, tesTa, tpsGold, tpsNickel, tpsTa, Nimag
+    return delays, tesGold, tesNickel, tesTa, tessub, tpsGold, tpsNickel, tpsTa, tpssub, Nimag
 
 dat_times, dat_tes, dat_tps=dataplot()
-sim_times, sim_te_au, sim_te_ni, sim_te_ta, sim_tp_au, sim_tp_ni, sim_tp_ta, sim_mag_ni=simplot('testkph', 0.1)
+sim_times, sim_te_au, sim_te_ni, sim_te_ta, sim_te_sub, sim_tp_au, sim_tp_ni, sim_tp_ta, sim_tp_sub, sim_mag_ni=simplot('testkph', 0.1)
 
 def plot(times, dat, ylabel, color, show):
     plt.plot(times, dat, color=color)
@@ -89,16 +93,18 @@ def plot(times, dat, ylabel, color, show):
         plt.show()
     return
 
-plot(dat_times, dat_tes, 'Temperature', 'blue', True)
-plot(dat_times, dat_tps, 'Temperature', 'blue', True)
+#plot(dat_times, dat_tes, 'Temperature', 'blue', True)
+#plot(dat_times, dat_tps, 'Temperature', 'blue', True)
 plot(sim_times, sim_te_ni, 'Temperature', 'orange', False)
 plot(sim_times, sim_te_au, 'Temperature', 'red', False)
 plot(sim_times, sim_te_ta, 'Temperature', 'yellow', False)
+plot(sim_times, sim_tp_sub, 'Temperature', 'green', False)
 plt.show()
 
 plot(sim_times, sim_tp_ni, 'Tempertature', 'orange', False)
 plot(sim_times, sim_tp_au, 'Tempertature', 'red', False)
 plot(sim_times, sim_tp_ta, 'Tempertature', 'yellow', False)
+plot(sim_times, sim_tp_sub, 'Tempertature', 'green', False)
 plt.show()
 
 plot(sim_times, sim_mag_ni, r'm/m_0', 'orange', True)
