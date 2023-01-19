@@ -83,7 +83,7 @@ def simplot(sim, offset):
     return delays, tesGold, tesNickel, tesTa, tessub, tpsGold, tpsNickel, tpsTa, tpssub, Nimag
 
 dat_times, dat_tes, dat_tps=dataplot()
-sim_times, sim_te_au, sim_te_ni, sim_te_ta, sim_te_sub, sim_tp_au, sim_tp_ni, sim_tp_ta, sim_tp_sub, sim_mag_ni=simplot('testkph', 0.1)
+sim_times, sim_te_au, sim_te_ni, sim_te_ta, sim_te_sub, sim_tp_au, sim_tp_ni, sim_tp_ta, sim_tp_sub, sim_mag_ni=simplot('testkph3', 0.1)
 
 def plot(times, dat, ylabel, color, show):
     plt.plot(times, dat, color=color)
@@ -93,8 +93,8 @@ def plot(times, dat, ylabel, color, show):
         plt.show()
     return
 
-#plot(dat_times, dat_tes, 'Temperature', 'blue', True)
-#plot(dat_times, dat_tps, 'Temperature', 'blue', True)
+plot(dat_times, dat_tes, 'Temperature', 'blue', True)
+plot(dat_times, dat_tps, 'Temperature', 'blue', True)
 plot(sim_times, sim_te_ni, 'Temperature', 'orange', False)
 plot(sim_times, sim_te_au, 'Temperature', 'red', False)
 plot(sim_times, sim_te_ta, 'Temperature', 'yellow', False)
@@ -109,6 +109,3 @@ plt.show()
 
 plot(sim_times, sim_mag_ni, r'm/m_0', 'orange', True)
 plt.show()
-
-
-

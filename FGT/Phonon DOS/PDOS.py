@@ -160,25 +160,37 @@ def plot_cp_cutoff(cphs, cutoff):
     #plt.savefig('cp_cutoff_2.pdf')
     plt.show()
 
+def get_ab_in_DOS():
+    dat=open('ab_in_uk.txt', 'r').readlines()[:-1]
+    dat_no_lineskips = [line.replace('\n', '') for line in dat]
+    dat_singled = [line.split(';') for line in dat_no_lineskips]
+    raw_ks = [float(line[0].replace(',', '.')) for line in dat_singled]
+    es =np.array(raw_ks)*sp.hbar*sp.c*100
+    dos = np.array([float(line[1].replace(',', '.')) for line in dat_singled])
+    plt.plot(es, dos)
+    plt.show()
+    return es, dos
 
-#now run the stuff, get the data:
+get_ab_in_DOS()
 
-#first for cutoff method:
-E_cutoff= int((35+deltE)/deltE)
-band_list=get_bandstructure('cutoff')
-DOS = get_DOS(band_list, deltE)
-cph_cutoff=cp_cutoff(DOS, E_cutoff)
-
-#then for optical vs. accoustic modes:
-#bands_ac, bands_op=get_bandstructure('opac')
-#DOS_ac= get_DOS(bands_ac, deltE) * deltk / 2 / math.pi / deltE / 1e-3
-#DOS_op= get_DOS(bands_op, deltE) * deltk / 2 / math.pi / deltE / 1e-3
-#cph_opac=cp_opac(DOS_ac, DOS_op)
-#cp_ac=cph_opac[0]
-#cp_op=cph_opac[1]
-
-#plot what you want:
-#plot_bands_DOS('opac', band_list, DOS, bands_ac, bands_op, DOS_ac, DOS_op)
-plot_bands_DOS('cutoff', band_list, DOS, cutoff=E_cutoff)
-#plot_cp_opac(cp_ac, cp_op)
-plot_cp_cutoff(cph_cutoff, E_cutoff)
+# #now run the stuff, get the data:
+#
+# #first for cutoff method:
+# E_cutoff= int((35+deltE)/deltE)
+# band_list=get_bandstructure('cutoff')
+# DOS = get_DOS(band_list, deltE)
+# cph_cutoff=cp_cutoff(DOS, E_cutoff)
+#
+# #then for optical vs. accoustic modes:
+# #bands_ac, bands_op=get_bandstructure('opac')
+# #DOS_ac= get_DOS(bands_ac, deltE) * deltk / 2 / math.pi / deltE / 1e-3
+# #DOS_op= get_DOS(bands_op, deltE) * deltk / 2 / math.pi / deltE / 1e-3
+# #cph_opac=cp_opac(DOS_ac, DOS_op)
+# #cp_ac=cph_opac[0]
+# #cp_op=cph_opac[1]
+#
+# #plot what you want:
+# #plot_bands_DOS('opac', band_list, DOS, bands_ac, bands_op, DOS_ac, DOS_op)
+# plot_bands_DOS('cutoff', band_list, DOS, cutoff=E_cutoff)
+# #plot_cp_opac(cp_ac, cp_op)
+# plot_cp_cutoff(cph_cutoff, E_cutoff)
