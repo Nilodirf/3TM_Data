@@ -35,7 +35,7 @@ def E_discrete(E, kspace, E_round_decimal):
 
 
 def Bose_Einstein(T, E):
-    bef=1/(np.exp(E/sp.k/T[:, np.newaxis])-1)
+    bef=1/(np.exp(E*sp.eV/sp.k/T[:, np.newaxis])-1)
     return(bef)
 
 
@@ -80,7 +80,8 @@ def get_DOS(bands, dE):
     return DOS
 
 def cp(dos, e, bef, dT):
-    ep=np.sum(e*dos*bef*deltE,axis=-1)/V_unit_cell
+    #ep=np.sum(e*dos*bef*deltE,axis=-1)/V_unit_cell
+    ep=np.trapz(e*dos*bef, e)
     cp=np.diff(ep)/dT
     return(cp)
 
@@ -95,6 +96,12 @@ def cp_cutoff(DOS, cutoff):
 
     for i, E in enumerate(Es):
         cps.append(cp(DOSs[i], E, Bose_Einstein(Ts, E), 1))
+    return cps
+
+def get_full_cp(DOS, T, E):
+    cps=[]
+    cps.append(cp(DOS, E, Bose_Einstein(T, E), 1)) #J/UC/K
+    cps=np.array(cps)/V_unit_cell*sp.eV
     return cps
 
 def cp_opac(DOSac, DOSop):
@@ -164,14 +171,27 @@ def get_ab_in_DOS():
     dat=open('ab_in_uk.txt', 'r').readlines()[:-1]
     dat_no_lineskips = [line.replace('\n', '') for line in dat]
     dat_singled = [line.split(';') for line in dat_no_lineskips]
-    raw_ks = [float(line[0].replace(',', '.')) for line in dat_singled]
-    es =np.array(raw_ks)*sp.hbar*sp.c*100
+    E_in_cminv = [float(line[0].replace(',', '.')) for line in dat_singled]
+    es =np.array(E_in_cminv)*sp.h*sp.c*100/sp.eV #eV
     dos = np.array([float(line[1].replace(',', '.')) for line in dat_singled])
+    norm_factor=np.trapz(dos, es) #states/cm
+    dos=dos/norm_factor*3*6 #(states/eV/cm)/(states/cm)=1/eV
+    print(np.trapz(dos,es))
+    T_range=np.arange(1,1000, 1) #K
     plt.plot(es, dos)
     plt.show()
-    return es, dos
+    cp=get_full_cp(dos, T_range, es)[0]
+    plt.plot(T_range[:-1], cp/1e6)
+    plt.ylim(0,1.1)
+    plt.xlim(0,1000)
+    plt.xlabel(r'$T_p$ [K]', fontsize=16)
+    plt.ylabel(r'$C_p(T)$ [MJ/m$^3$K]', fontsize=16)
+    plt.savefig('cp_abin.pdf')
+    plt.show()
 
-get_ab_in_DOS()
+    return E_range, DOS
+
+es, dos=get_ab_in_DOS()
 
 # #now run the stuff, get the data:
 #
@@ -179,7 +199,7 @@ get_ab_in_DOS()
 # E_cutoff= int((35+deltE)/deltE)
 # band_list=get_bandstructure('cutoff')
 # DOS = get_DOS(band_list, deltE)
-# cph_cutoff=cp_cutoff(DOS, E_cutoff)
+#cph_cutoff=cp_cutoff(DOS, E_cutoff)
 #
 # #then for optical vs. accoustic modes:
 # #bands_ac, bands_op=get_bandstructure('opac')
