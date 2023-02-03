@@ -175,14 +175,14 @@ def get_ab_in_DOS():
     es =np.array(E_in_cminv)*sp.h*sp.c*100/sp.eV #eV
     dos = np.array([float(line[1].replace(',', '.')) for line in dat_singled])
     norm_factor=np.trapz(dos, es) #states/cm
-    dos=dos/norm_factor*3*6 #(states/eV/cm)/(states/cm)=1/eV
+    dos=dos/norm_factor*3*12 #(states/eV/cm)/(states/cm)=1/eV
     print(np.trapz(dos,es))
     T_range=np.arange(1,1000, 1) #K
     plt.plot(es, dos)
     plt.show()
     cp=get_full_cp(dos, T_range, es)[0]
     plt.plot(T_range[:-1], cp/1e6)
-    plt.ylim(0,1.1)
+    plt.ylim(0,2.1)
     plt.xlim(0,1000)
     plt.xlabel(r'$T_p$ [K]', fontsize=16)
     plt.ylabel(r'$C_p(T)$ [MJ/m$^3$K]', fontsize=16)
