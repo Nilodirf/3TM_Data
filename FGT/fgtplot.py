@@ -47,6 +47,9 @@ def simplot(dat):
     te=[float(line[2]) for line in columns]
     tp=[float(line[3]) for line in columns]
     nmag=np.array([float(line[1]) for line in columns])
+    tpfile=open('tpfile.txt', 'dat')
+    for i,t in enumerate(times):
+
     return(times, np.array(nmag), np.array(te), np.array(tp))
 
 def fitplot():
