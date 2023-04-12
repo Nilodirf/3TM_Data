@@ -101,6 +101,8 @@ plot(sim_times, sim_te_ta, 'Temperature', 'yellow', False)
 plot(sim_times, sim_tp_sub, 'Temperature', 'green', False)
 plt.show()
 
+plot(sim_times, sim_mag_ni, r'm/m_0', 'blue', True)
+
 plot(sim_times, sim_tp_ni, 'Tempertature', 'orange', False)
 plot(sim_times, sim_tp_au, 'Tempertature', 'red', False)
 plot(sim_times, sim_tp_ta, 'Tempertature', 'yellow', False)
