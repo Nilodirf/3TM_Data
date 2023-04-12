@@ -167,31 +167,60 @@ def plot_cp_cutoff(cphs, cutoff):
     #plt.savefig('cp_cutoff_2.pdf')
     plt.show()
 
-def get_ab_in_DOS():
-    dat=open('ab_in_uk.txt', 'r').readlines()[:-1]
+def get_ab_in_CP():
+    dat=open('ab_in_uk_bulk.txt', 'r').readlines()[:-1]
+    # cp1_file=open('C:/Users/tgrie/OneDrive/Dokumente/GitHub/3TM_Data/Ab-initio-parameters2/Ab-initio-FGT/FGT_c_p1.txt', 'w+')
+    # cp2_file=open('C:/Users/tgrie/OneDrive/Dokumente/GitHub/3TM_Data/Ab-initio-parameters2/Ab-initio-FGT/FGT_c_p2.txt', 'w+')
+    # cp1_file.write('Ab initio lattice heat capacity of optical phonons from Sukanyas monolayer DFT' + '\n')
+    # cp1_file.write('Temperature [K]' + '\t' + 'C_p [J/m^3K]' + '\n')
+    # cp2_file.write('Ab initio lattice heat capacity of accoustic phonons from Sukanyas monolayer DFT' + '\n')
+    # cp2_file.write('Temperature [K]' + '\t' + 'C_p [J/m^3K]' + '\n')
+
     dat_no_lineskips = [line.replace('\n', '') for line in dat]
     dat_singled = [line.split(';') for line in dat_no_lineskips]
     E_in_cminv = [float(line[0].replace(',', '.')) for line in dat_singled]
     es =np.array(E_in_cminv)*sp.h*sp.c*100/sp.eV #eV
     dos = np.array([float(line[1].replace(',', '.')) for line in dat_singled])
     norm_factor=np.trapz(dos, es) #states/cm
-    dos=dos/norm_factor*3*6 #(states/eV/cm)/(states/cm)=1/eV
-    print(np.trapz(dos,es))
+    dos=dos/norm_factor*3*12 #(states/eV/cm)/(states/cm)=1/eV
     T_range=np.arange(1,1000, 1) #K
+    cutoff_mixtop=es<7.5e-3
+    cutoff_pure_acc=es<6.2e-3
+    cutoff_gaptop=es<1e-2
+    cutoff_mix=np.logical_and(cutoff_mixtop, np.invert(cutoff_pure_acc))
+    cutoff_gap=np.logical_and(cutoff_gaptop, np.invert(cutoff_mixtop))
+    print(cutoff_pure_acc)
+    print(cutoff_mix)
+    print(cutoff_gap)
     plt.plot(es, dos)
     plt.show()
-    cp=get_full_cp(dos, T_range, es)[0]
-    plt.plot(T_range[:-1], cp/1e6)
-    plt.ylim(0,1.1)
+    cp_lowest=get_full_cp(dos[cutoff_pure_acc], T_range, es[cutoff_pure_acc])[0]
+    cp_mix=get_full_cp(dos[cutoff_mix],T_range, es[cutoff_mix])[0]
+    cp_gap=get_full_cp(dos[cutoff_gap], T_range, es[cutoff_gap])[0]
+
+    cp_acc=cp_lowest+0.5*cp_mix+cp_gap
+    cp_tot=get_full_cp(dos, T_range, es)[0]
+    cp_opt=cp_tot-cp_acc
+    plt.plot(T_range[:-1], cp_tot/1e6, color='black', linewidth=3.0, alpha=0.7, label=r'total')
+    plt.plot(T_range[:-1], cp_opt/1e6, color='purple', linewidth=3.0, alpha=0.7, label=r'optical')
+    plt.plot(T_range[:-1], cp_acc/1e6, color='magenta', linewidth=3.0, alpha=0.7, label=r'accoustic')
+    plt.ylim(0,2.1)
     plt.xlim(0,1000)
     plt.xlabel(r'$T_p$ [K]', fontsize=16)
     plt.ylabel(r'$C_p(T)$ [MJ/m$^3$K]', fontsize=16)
+
+    # for i in range(len(T_range)-1):
+    #     cp1_file.write(str(T_range[i+1]) + '\t' + str(cp_opt[i]) + '\n')
+    #     cp2_file.write(str(T_range[i+1]) + '\t' + str(cp_acc[i]) + '\n')
+    # cp1_file.close()
+    # cp2_file.close()
+    plt.legend(fontsize=14)
     plt.savefig('cp_abin.pdf')
     plt.show()
 
-    return E_range, DOS
+    return
 
-es, dos=get_ab_in_DOS()
+get_ab_in_CP()
 
 # #now run the stuff, get the data:
 #
