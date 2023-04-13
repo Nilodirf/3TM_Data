@@ -189,11 +189,19 @@ def get_ab_in_CP():
     cutoff_gaptop=es<1e-2
     cutoff_mix=np.logical_and(cutoff_mixtop, np.invert(cutoff_pure_acc))
     cutoff_gap=np.logical_and(cutoff_gaptop, np.invert(cutoff_mixtop))
-    print(cutoff_pure_acc)
-    print(cutoff_mix)
-    print(cutoff_gap)
-    plt.plot(es, dos)
+
+    dos_ac=np.array(list(dos[cutoff_pure_acc])+list([0.5*i for i in dos[cutoff_mix]])+list(+dos[cutoff_gap]))
+    dos_op=list([0.5*i for i in dos[cutoff_mix]])+list([0 for i in cutoff_gap if i==True])+list(dos[~cutoff_gaptop])
+
+    plt.plot(es, dos, color='black', ls='dashed', label=r'total', lw=2.0)
+    plt.plot(es[~cutoff_pure_acc], dos_op, color='purple', label=r'optical')
+    plt.plot(es[cutoff_gaptop], dos_ac, color='magenta', label=r'acoustic')
+    plt.ylabel(r'DOS [arb. units]', fontsize=16)
+    plt.xlabel(r'Energy [eV]', fontsize=16)
+    plt.legend(fontsize=14)
+    plt.savefig('ab_init_DOS.pdf')
     plt.show()
+
     cp_lowest=get_full_cp(dos[cutoff_pure_acc], T_range, es[cutoff_pure_acc])[0]
     cp_mix=get_full_cp(dos[cutoff_mix],T_range, es[cutoff_mix])[0]
     cp_gap=get_full_cp(dos[cutoff_gap], T_range, es[cutoff_gap])[0]
@@ -203,7 +211,7 @@ def get_ab_in_CP():
     cp_opt=cp_tot-cp_acc
     plt.plot(T_range[:-1], cp_tot/1e6, color='black', linewidth=3.0, alpha=0.7, label=r'total')
     plt.plot(T_range[:-1], cp_opt/1e6, color='purple', linewidth=3.0, alpha=0.7, label=r'optical')
-    plt.plot(T_range[:-1], cp_acc/1e6, color='magenta', linewidth=3.0, alpha=0.7, label=r'accoustic')
+    plt.plot(T_range[:-1], cp_acc/1e6, color='magenta', linewidth=3.0, alpha=0.7, label=r'acoustic')
     plt.ylim(0,2.1)
     plt.xlim(0,1000)
     plt.xlabel(r'$T_p$ [K]', fontsize=16)
